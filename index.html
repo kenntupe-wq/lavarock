@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Lava Rock Pest Control
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lime:#ff5722; --lime-dim:#c8431a; --amber:#ffb13d; --red:#e3503f;
+  --dark:#0a0907; --dark2:#120f0c; --dark3:#1a1511;
+  --border:rgba(255,87,34,0.16); --text:#ece4dc; --text-dim:#7a6f64;
+  --paper:#f4f1e8;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;background:var(--dark);font-family:'Inter',sans-serif;color:var(--text);overflow:hidden;-webkit-user-select:none;user-select:none;}
+
+/* SLIDES */
+#slides{width:100%;height:100%;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.45s ease,transform 0.45s cubic-bezier(.4,0,.2,1);transform:translateX(40px);overflow:hidden;}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.exit{opacity:0;transform:translateX(-40px);}
+
+/* BARRIER LINE — signature motif */
+.barrier-line{position:absolute;left:0;right:0;height:2px;background-image:repeating-linear-gradient(90deg,var(--lime) 0,var(--lime) 10px,transparent 10px,transparent 18px);opacity:0.5;}
+.barrier-line.glow{box-shadow:0 0 8px rgba(255,87,34,0.5);}
+
+/* NAV */
+#nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:100;flex-wrap:wrap;justify-content:center;max-width:60%;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:all 0.3s;cursor:pointer;flex-shrink:0;}
+.dot.active{background:var(--lime);box-shadow:0 0 8px var(--lime);width:20px;border-radius:4px;}
+
+.nav-btn{position:fixed;bottom:12px;background:rgba(0,0,0,0.8);border:1px solid var(--border);color:var(--lime);border-radius:6px;padding:8px 14px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;z-index:150;cursor:pointer;transition:all 0.2s;box-shadow:0 0 10px rgba(255,87,34,0.05);}
+.nav-btn:active{border-color:var(--lime);box-shadow:0 0 12px var(--lime);}
+#prev-btn{left:16px;} #next-btn{right:16px;}
+
+#tap-hint{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;animation:blink 2s ease infinite;pointer-events:none;z-index:100;white-space:nowrap;}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:.8}}
+
+#clock{position:fixed;top:20px;left:20px;z-index:200;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dim);}
+#edit-btn{position:fixed;top:16px;right:16px;z-index:200;background:rgba(0,0,0,.6);border:1px solid var(--border);color:var(--text-dim);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all 0.2s;}
+#edit-btn.active{border-color:var(--amber);color:var(--amber);box-shadow:0 0 10px rgba(232,163,61,0.3);}
+
+.media-slot{width:100%;height:100%;object-fit:contain;background:rgba(0,0,0,0.3);display:block;}
+.media-slot[src=""],.media-slot:not([src]){background:rgba(0,0,0,0.5);}
+
+/* ── S1: HERO ── */
+#s1{background:var(--dark);justify-content:center;align-items:center;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,87,34,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,87,34,0.025) 1px,transparent 1px);background-size:46px 46px;}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 20px;width:100%;}
+.bug-mark{width:62px;height:62px;margin:0 auto 14px;filter:drop-shadow(0 0 16px rgba(255,87,34,0.5));}
+#s1 h1{font-family:'Archivo Black',sans-serif;font-size:54px;letter-spacing:2px;color:#fff;line-height:0.95;}
+#s1 h1 span{display:block;color:var(--lime);font-size:22px;letter-spacing:6px;margin-top:8px;}
+.tagline{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--lime);margin-top:14px;}
+.trust-row{display:flex;gap:8px;justify-content:center;margin-top:18px;flex-wrap:wrap;}
+.trust-badge{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,87,34,0.25);padding:5px 10px;border-radius:4px;font-family:'Space Mono',monospace;font-size:9px;color:var(--lime);letter-spacing:1px;}
+.status-bar{margin-top:18px;display:flex;gap:14px;justify-content:center;}
+.stat-pill{display:flex;flex-direction:column;align-items:center;background:rgba(0,0,0,0.4);padding:8px 14px;border-radius:4px;border:1px solid var(--border);}
+.stat-pill .num{font-family:'Archivo Black',sans-serif;font-size:26px;color:var(--lime);line-height:1;}
+.stat-pill .lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-top:3px;}
+.pulse-hint{margin-top:26px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 1.5s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
+/* ── S2: TREATMENT ECOSYSTEM ── */
+#s2{background:#070a06;}
+.s2-inner{display:flex;flex-direction:column;width:100%;height:100%;padding:12px 12px 58px;box-sizing:border-box;overflow:hidden;}
+.s2-head{flex-shrink:0;text-align:center;margin-bottom:8px;}
+.s2-head h2{font-family:'Archivo Black',sans-serif;font-size:20px;color:#fff;letter-spacing:1px;}
+.s2-head .sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--lime);letter-spacing:2px;margin-top:2px;}
+.zone-grid{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-height:0;}
+.zone-card{width:calc(50% - 4px);background:#0d130b;border:1px solid rgba(255,255,255,0.05);border-radius:10px;position:relative;padding:9px;display:flex;flex-direction:column;overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+.zone-card:active{border-color:var(--lime);}
+.zone-card .img-wrapper{flex:1;position:relative;border-radius:6px;overflow:hidden;min-height:0;background:rgba(0,0,0,0.3);}
+.zone-title{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.78);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;flex-shrink:0;}
+.zone-badge{position:absolute;top:8px;right:8px;font-size:8px;font-family:'Space Mono',monospace;background:rgba(255,87,34,0.12);color:var(--lime);padding:2px 5px;border-radius:3px;}
+
+/* ── DEVICE MODAL (treatment zone detail) ── */
+#device-modal{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+#device-modal.open{opacity:1;pointer-events:all;}
+.modal-card{background:#10160f;border:1px solid var(--border);border-radius:14px;width:88%;max-width:400px;padding:22px;transform:translateY(20px);transition:transform 0.3s;position:relative;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#device-modal.open .modal-card{transform:translateY(0);}
+.modal-close{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-dim);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal-img-area{width:100%;height:140px;background:#070a06;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;border:1px solid rgba(255,255,255,0.04);overflow:hidden;cursor:pointer;position:relative;}
+.modal-img-area img,.modal-img-area video{max-width:100%;max-height:100%;object-fit:contain;}
+.modal-upload-hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--text-dim);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;}
+.modal-upload-hint .uicon{font-size:26px;opacity:0.4;}
+.modal-title{font-family:'Archivo Black',sans-serif;font-size:22px;letter-spacing:1px;color:#fff;margin-bottom:4px;}
+.modal-res{font-family:'Space Mono',monospace;font-size:9px;color:var(--lime);letter-spacing:2px;margin-bottom:10px;}
+.modal-desc{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:12px;}
+.modal-specs{display:flex;flex-wrap:wrap;gap:6px;}
+.spec-chip{background:rgba(255,87,34,0.08);border:1px solid rgba(255,87,34,0.18);color:var(--lime-dim);font-family:'Space Mono',monospace;font-size:9px;padding:3px 7px;border-radius:4px;letter-spacing:1px;}
+.modal-media-btns{display:flex;gap:8px;margin-top:12px;}
+.modal-media-btn{flex:1;padding:8px;border-radius:6px;border:1px solid var(--border);background:rgba(255,87,34,0.05);color:var(--text-dim);font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;text-align:center;letter-spacing:1px;transition:all 0.2s;}
+.modal-media-btn:active{border-color:var(--lime);color:var(--lime);}
+
+/* ── S3: BEFORE/AFTER ── */
+#s3{background:#070a06;}
+.s3-inner{display:flex;flex-direction:column;width:100%;height:100%;padding:12px 12px 58px;box-sizing:border-box;overflow:hidden;}
+.s3-head{flex-shrink:0;text-align:center;margin-bottom:8px;}
+.s3-head h2{font-family:'Archivo Black',sans-serif;font-size:20px;color:#fff;letter-spacing:1px;}
+.s3-head .sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--lime);letter-spacing:2px;margin-top:2px;}
+.ba-grid{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-height:0;}
+.ba-feed{width:calc(50% - 4px);height:calc(50% - 4px);border-radius:8px;overflow:hidden;border:1px solid var(--border);position:relative;background:#000;flex-shrink:0;}
+.ba-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:8px;pointer-events:none;z-index:5;}
+.ba-top{display:flex;justify-content:space-between;align-items:center;}
+.ba-label{font-family:'Space Mono',monospace;font-size:9px;color:#fff;background:rgba(0,0,0,0.6);padding:2px 5px;border-radius:2px;}
+.ba-tag{font-family:'Space Mono',monospace;font-size:8px;padding:2px 5px;border-radius:2px;}
+.ba-tag.before{color:var(--red);background:rgba(0,0,0,0.6);}
+.ba-tag.after{color:var(--lime);background:rgba(0,0,0,0.6);}
+
+/* ── S4: YARD SIGN ── */
+#s4{background:var(--dark2);justify-content:center;align-items:center;}
+.yard-sign-wrapper{width:220px;height:220px;margin:0 auto 16px;border-radius:10px;}
+.sign-caption{font-size:14px;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;font-family:'Space Mono',monospace;text-align:center;line-height:1.8;}
+.sign-caption span{color:var(--lime);}
+
+/* ── S5: WHY US ── */
+#s5{background:var(--dark);padding:30px 24px 64px;justify-content:center;}
+#s5 h2{font-family:'Archivo Black',sans-serif;font-size:32px;letter-spacing:1px;color:#fff;}
+.sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--lime);letter-spacing:2px;margin-bottom:16px;}
+.feature-list{display:flex;flex-direction:column;gap:10px;}
+.feature-item{display:flex;gap:12px;padding:12px;border-radius:8px;background:rgba(255,87,34,0.025);border:1px solid var(--border);align-items:flex-start;}
+.feature-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.feature-text h3{font-size:15px;color:#fff;margin-bottom:2px;font-weight:700;}
+.feature-text p{font-size:12px;color:var(--text-dim);line-height:1.4;}
+
+/* ── S6: TESTIMONIAL ── */
+#s6{background:var(--dark2);justify-content:center;align-items:center;padding:30px 28px 64px;}
+.testi-wrap{width:100%;}
+.testi-header{font-family:'Space Mono',monospace;font-size:10px;color:var(--lime);letter-spacing:3px;margin-bottom:20px;text-align:center;}
+.stars{color:var(--amber);font-size:20px;margin-bottom:16px;letter-spacing:4px;}
+.testi-quote{font-family:'Inter',sans-serif;font-size:19px;font-weight:600;color:#fff;line-height:1.5;margin-bottom:20px;position:relative;padding-left:16px;}
+.testi-quote::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--lime);border-radius:2px;}
+.testi-person{display:flex;align-items:center;gap:14px;}
+.testi-avatar{width:52px;height:52px;border-radius:50%;border:2px solid var(--lime);background:var(--dark3);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.testi-avatar img{width:100%;height:100%;object-fit:cover;}
+.testi-avatar-ph{font-size:24px;}
+.testi-name{font-family:'Archivo Black',sans-serif;font-size:19px;letter-spacing:0.5px;color:#fff;}
+.testi-city{font-family:'Space Mono',monospace;font-size:10px;color:var(--lime);letter-spacing:1px;}
+.testi-detail{font-size:12px;color:var(--text-dim);margin-top:3px;}
+.testi-nav{display:flex;gap:8px;justify-content:center;margin-top:22px;}
+.testi-dot{width:8px;height:8px;border-radius:50%;background:var(--text-dim);cursor:pointer;transition:all 0.3s;}
+.testi-dot.active{background:var(--lime);box-shadow:0 0 6px var(--lime);}
+
+/* ── S7: PEST PRESSURE ── */
+#s8{background:var(--dark);padding:30px 24px 64px;justify-content:center;align-items:center;}
+.crime-wrap{width:100%;text-align:center;}
+.crime-wrap h2{font-family:'Archivo Black',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;margin-bottom:4px;}
+.crime-city{font-family:'Space Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:3px;margin-bottom:20px;}
+.crime-big{font-family:'Archivo Black',sans-serif;font-size:64px;color:var(--red);line-height:1;text-shadow:0 0 24px rgba(227,80,63,0.35);}
+.crime-unit{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-bottom:24px;}
+.crime-stats{display:flex;gap:12px;justify-content:center;margin-bottom:20px;}
+.crime-stat{background:rgba(227,80,63,0.06);border:1px solid rgba(227,80,63,0.2);border-radius:8px;padding:12px 14px;flex:1;}
+.crime-stat .cn{font-family:'Archivo Black',sans-serif;font-size:24px;color:var(--red);line-height:1;}
+.crime-stat .cl{font-family:'Space Mono',monospace;font-size:8px;color:var(--text-dim);letter-spacing:1px;margin-top:4px;}
+.crime-divider{font-family:'Space Mono',monospace;font-size:10px;color:var(--lime);letter-spacing:1px;margin-top:8px;padding:10px;background:rgba(255,87,34,0.05);border-radius:6px;border:1px solid rgba(255,87,34,0.12);}
+
+/* ── S8: HOW IT WORKS TIMELINE ── */
+#s9{background:var(--dark2);padding:30px 24px 64px;justify-content:center;}
+#s9 h2{font-family:'Archivo Black',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;margin-bottom:4px;}
+.timeline{display:flex;flex-direction:column;gap:0;margin-top:16px;position:relative;}
+.tl-item{display:flex;gap:16px;position:relative;}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
+.tl-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--lime);background:var(--dark);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;z-index:2;}
+.tl-line{width:2px;flex:1;background:linear-gradient(var(--lime),rgba(255,87,34,0.1));margin:4px 0;}
+.tl-item:last-child .tl-line{display:none;}
+.tl-content{padding-bottom:20px;flex:1;}
+.tl-time{font-family:'Archivo Black',sans-serif;font-size:14px;color:var(--lime);letter-spacing:1px;line-height:1;}
+.tl-title{font-size:15px;color:#fff;font-weight:700;margin-bottom:2px;margin-top:3px;}
+.tl-desc{font-size:12px;color:var(--text-dim);line-height:1.4;}
+
+/* ── S9: PACKAGES ── */
+#s10{background:var(--dark);padding:20px 16px 64px;justify-content:center;}
+#s10 h2{font-family:'Archivo Black',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;text-align:center;}
+#s10 .sub{text-align:center;margin-bottom:16px;}
+.pkg-grid{display:flex;gap:10px;width:100%;}
+.pkg-card{flex:1;background:#0d130b;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;cursor:pointer;transition:all 0.2s;position:relative;}
+.pkg-card.selected{border-color:var(--lime);box-shadow:0 0 20px rgba(255,87,34,0.12);}
+.pkg-card.best{border-color:var(--amber);}
+.pkg-card.best.selected{border-color:var(--amber);box-shadow:0 0 20px rgba(232,163,61,0.2);}
+.pkg-best-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amber);color:#000;font-family:'Space Mono',monospace;font-size:8px;padding:2px 8px;border-radius:3px;white-space:nowrap;letter-spacing:1px;font-weight:700;}
+.pkg-name{font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:0.5px;color:#fff;margin-bottom:4px;}
+.pkg-price{font-family:'Archivo Black',sans-serif;font-size:32px;color:var(--lime);line-height:1;}
+.pkg-price-unit{font-family:'Space Mono',monospace;font-size:8px;color:var(--text-dim);margin-bottom:10px;}
+.pkg-features{display:flex;flex-direction:column;gap:5px;flex:1;}
+.pkg-feat{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.3px;display:flex;gap:5px;align-items:flex-start;}
+.pkg-feat.yes{color:var(--text);}
+.pkg-feat .chk{color:var(--lime);flex-shrink:0;}
+.pkg-feat .x{color:var(--text-dim);opacity:0.4;flex-shrink:0;}
+.pkg-select-btn{margin-top:10px;padding:7px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;transition:all 0.2s;letter-spacing:1px;text-align:center;}
+.pkg-card.selected .pkg-select-btn{background:var(--lime);color:#000;border-color:var(--lime);font-weight:700;}
+.pkg-savings{margin-top:14px;text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:var(--lime);letter-spacing:1px;background:rgba(255,87,34,0.05);border:1px solid rgba(255,87,34,0.12);padding:8px;border-radius:6px;}
+
+/* ── S10: OBJECTIONS ── */
+#s11{background:var(--dark);padding:30px 24px 64px;justify-content:center;}
+#s11 h2{font-family:'Archivo Black',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;margin-bottom:4px;}
+#s11 .sub{color:var(--amber);}
+.obj-list{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.obj-item{border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);overflow:hidden;cursor:pointer;}
+.obj-question{padding:13px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--text);font-weight:600;}
+.obj-question .arrow{color:var(--lime);font-size:18px;transition:transform 0.3s;flex-shrink:0;margin-left:8px;}
+.obj-answer{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:12px;color:var(--text-dim);line-height:1.6;padding:0 14px;}
+.obj-item.open .obj-answer{max-height:180px;padding:10px 14px;border-top:1px solid var(--border);}
+.obj-item.open .arrow{transform:rotate(90deg);}
+
+/* ── S11: DAMAGE / SAVINGS CALC ── */
+#s12{background:var(--dark2);padding:30px 24px 64px;justify-content:center;align-items:center;}
+.ins-wrap{width:100%;}
+.ins-wrap h2{font-family:'Archivo Black',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;text-align:center;}
+.ins-wrap .sub{text-align:center;margin-bottom:20px;}
+.ins-card{background:rgba(255,87,34,0.035);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;}
+.ins-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.ins-row:last-child{border-bottom:none;}
+.ins-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;}
+.ins-value{font-family:'Archivo Black',sans-serif;font-size:20px;color:#fff;}
+.ins-value.green{color:var(--lime);}
+.ins-value.red{color:var(--red);}
+.ins-value.amber{color:var(--amber);}
+.slider-wrap{margin:14px 0;}
+.slider-label{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);margin-bottom:6px;}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:var(--border);outline:none;touch-action:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--lime);cursor:pointer;box-shadow:0 0 8px rgba(255,87,34,0.4);}
+.ins-result{background:rgba(255,87,34,0.06);border:1px solid rgba(255,87,34,0.2);border-radius:8px;padding:14px;text-align:center;}
+.ins-result-big{font-family:'Archivo Black',sans-serif;font-size:42px;color:var(--lime);line-height:1;}
+.ins-result-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:2px;margin-top:4px;}
+
+/* ── S12: CLOSER ── */
+#s13{background:var(--dark);justify-content:center;align-items:center;}
+.closer-content{text-align:center;padding:0 28px;width:100%;}
+.headline{font-family:'Archivo Black',sans-serif;font-size:42px;color:#fff;line-height:1.05;margin-bottom:10px;letter-spacing:0.5px;}
+.headline span{color:var(--lime);text-shadow:0 0 16px rgba(255,87,34,0.4);}
+.body-copy{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:20px;max-width:340px;margin-left:auto;margin-right:auto;}
+.urgency-strip{background:rgba(232,163,61,0.08);border:1px solid rgba(232,163,61,0.25);border-radius:6px;padding:9px 14px;margin-bottom:18px;font-family:'Space Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.cta-btn{display:block;width:100%;background:var(--lime);color:#000;font-family:'Archivo Black',sans-serif;font-size:17px;letter-spacing:1px;padding:13px 20px;border-radius:4px;border:none;cursor:pointer;box-shadow:0 0 26px rgba(255,87,34,0.3);text-decoration:none;margin-bottom:10px;text-align:center;}
+.cta-btn-secondary{display:block;width:100%;background:transparent;color:var(--text-dim);font-family:'Archivo Black',sans-serif;font-size:14px;letter-spacing:1px;padding:10px 20px;border-radius:4px;border:1px solid var(--border);cursor:pointer;text-decoration:none;text-align:center;margin-bottom:16px;}
+.qr-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px;}
+.qr-box{width:70px;height:70px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.qr-box img{width:100%;height:100%;object-fit:contain;}
+.qr-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;text-align:left;line-height:1.8;}
+.guarantee{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:16px;}
+.rep-card{padding:12px 16px;border-radius:10px;background:rgba(255,87,34,0.035);border:1px solid var(--border);display:flex;align-items:center;gap:14px;text-align:left;}
+.rep-avatar{width:44px;height:44px;border-radius:50%;background:var(--dark3);border:2px solid var(--lime);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.rep-name{font-family:'Archivo Black',sans-serif;font-size:16px;letter-spacing:0.5px;color:#fff;}
+.rep-title{font-family:'Space Mono',monospace;font-size:8px;color:var(--lime);letter-spacing:1px;}
+.rep-phone{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:3px;}
+
+/* ── SETTINGS PANEL ── */
+#settings-panel{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.95);backdrop-filter:blur(8px);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.3s;overflow:hidden;}
+#settings-panel.open{opacity:1;pointer-events:all;}
+.settings-header{padding:44px 24px 0;flex-shrink:0;}
+.settings-title{font-family:'Archivo Black',sans-serif;font-size:26px;letter-spacing:1px;color:#fff;margin-bottom:4px;}
+.settings-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:2px;margin-bottom:0;}
+.settings-tabs{display:flex;gap:0;margin:16px 24px 0;border-bottom:1px solid var(--border);flex-shrink:0;}
+.stab{flex:1;padding:10px 0;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:2px;text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
+.stab.active{color:var(--lime);border-bottom-color:var(--lime);}
+.settings-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 24px 100px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.settings-group{margin-bottom:20px;}
+.settings-group label{display:block;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-bottom:8px;}
+.settings-input{width:100%;background:rgba(255,87,34,0.05);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:#fff;font-family:'Space Mono',monospace;font-size:13px;outline:none;-webkit-appearance:none;appearance:none;}
+.settings-input:focus{border-color:var(--lime);}
+.settings-save{width:100%;background:var(--lime);color:#000;font-family:'Archivo Black',sans-serif;font-size:16px;letter-spacing:1px;padding:12px;border-radius:4px;border:none;cursor:pointer;margin-top:8px;}
+.settings-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-dim);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;}
+
+.photo-section-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:3px;margin:18px 0 10px;text-transform:uppercase;}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px;}
+.photo-slot{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#0d130b;border:1px solid var(--border);cursor:pointer;transition:border-color 0.2s;}
+.photo-slot:active{border-color:var(--lime);}
+.photo-slot img,.photo-slot video{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-slot-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;pointer-events:none;}
+.photo-slot-empty .ps-icon{font-size:22px;opacity:0.4;}
+.photo-slot-empty .ps-label{font-family:'Space Mono',monospace;font-size:8px;color:var(--text-dim);letter-spacing:1px;text-align:center;padding:0 4px;}
+.photo-slot.has-media .photo-slot-empty{display:none;}
+.photo-slot-check{position:absolute;top:4px;right:4px;width:16px;height:16px;border-radius:50%;background:var(--lime);display:none;align-items:center;justify-content:center;font-size:9px;color:#000;}
+.photo-slot.has-media .photo-slot-check{display:flex;}
+.photo-slot.wide{grid-column:span 2;}
+</style>
+</head>
+<body>
+
+<div id="clock"></div>
+<div id="edit-btn">⚙️</div>
+
+<button class="nav-btn" id="prev-btn">◀ PREV</button>
+<button class="nav-btn" id="next-btn">NEXT ▶</button>
+
+<input type="file" id="media-upload" accept="image/*,video/*" style="display:none;position:fixed;top:-9999px;left:-9999px;">
+
+<!-- DEVICE MODAL (treatment zone detail) -->
+<div id="device-modal">
+  <div class="modal-card">
+    <div class="modal-close" id="modal-close-btn">✕</div>
+    <div class="modal-img-area" id="modal-img-area">
+      <div class="modal-upload-hint" id="modal-upload-hint">
+        <div class="uicon">📷</div><div>TAP TO ADD PHOTO/VIDEO</div>
+      </div>
+      <img id="modal-img" src="" alt="" style="display:none;">
+      <video id="modal-vid" autoplay loop muted playsinline style="display:none;"></video>
+    </div>
+    <div class="modal-title" id="modal-title">ZONE</div>
+    <div class="modal-res" id="modal-res"></div>
+    <div class="modal-desc" id="modal-desc"></div>
+    <div class="modal-specs" id="modal-specs"></div>
+    <div class="modal-media-btns">
+      <div class="modal-media-btn" id="modal-upload-btn">⬆ IMAGE</div>
+      <div class="modal-media-btn" id="modal-upload-vid-btn">▶ VIDEO</div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div id="settings-panel">
+  <div class="settings-close" id="settings-close-btn">✕</div>
+  <div class="settings-header">
+    <div class="settings-title">SETTINGS</div>
+    <div class="settings-sub">// CUSTOMIZE YOUR DECK //</div>
+  </div>
+  <div class="settings-tabs">
+    <div class="stab active" data-tab="info">MY INFO</div>
+    <div class="stab" data-tab="photos">PHOTOS</div>
+  </div>
+  <div class="settings-body">
+
+    <div class="tab-panel active" id="tab-info">
+      <div class="settings-group" style="margin-top:8px;">
+        <label>YOUR NAME</label>
+        <input class="settings-input" id="set-name" type="text" placeholder="Your Full Name">
+      </div>
+      <div class="settings-group">
+        <label>YOUR PHONE</label>
+        <input class="settings-input" id="set-phone" type="tel" placeholder="(555) 000-0000">
+      </div>
+      <div class="settings-group">
+        <label>YOUR CITY / AREA</label>
+        <input class="settings-input" id="set-city" type="text" placeholder="e.g. Memphis, TN">
+      </div>
+      <div class="settings-group">
+        <label>COMPANY NAME</label>
+        <input class="settings-input" id="set-company" type="text" placeholder="e.g. Lava Rock Pest Control">
+      </div>
+      <div class="settings-group">
+        <label>BOOKING LINK / TEXT-TO URL</label>
+        <input class="settings-input" id="set-link" type="text" placeholder="e.g. yourcompany.com/quote">
+      </div>
+      <button class="settings-save" id="settings-save-btn">SAVE &amp; CLOSE</button>
+    </div>
+
+    <div class="tab-panel" id="tab-photos">
+      <div class="photo-section-label">🐛 TREATMENT ZONES (SLIDE 2)</div>
+      <div class="photo-grid">
+        <div class="photo-slot" id="pslot-zone_perimeter" data-key="zone_perimeter" data-accept="image/*,video/*">
+          <div class="photo-slot-empty"><div class="ps-icon">🏠</div><div class="ps-label">PERIMETER</div></div>
+          <img id="pimg-zone_perimeter" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+        <div class="photo-slot" id="pslot-zone_interior" data-key="zone_interior" data-accept="image/*,video/*">
+          <div class="photo-slot-empty"><div class="ps-icon">🧹</div><div class="ps-label">INTERIOR</div></div>
+          <img id="pimg-zone_interior" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+        <div class="photo-slot" id="pslot-zone_termite" data-key="zone_termite" data-accept="image/*,video/*">
+          <div class="photo-slot-empty"><div class="ps-icon">🪵</div><div class="ps-label">TERMITE STATIONS</div></div>
+          <img id="pimg-zone_termite" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+        <div class="photo-slot" id="pslot-zone_mosquito" data-key="zone_mosquito" data-accept="image/*,video/*">
+          <div class="photo-slot-empty"><div class="ps-icon">🦟</div><div class="ps-label">MOSQUITO MISTING</div></div>
+          <img id="pimg-zone_mosquito" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+      </div>
+
+      <div class="photo-section-label">📸 BEFORE / AFTER (SLIDE 3)</div>
+      <div class="photo-grid">
+        <div class="photo-slot" id="pslot-ba_before1" data-key="ba_before1" data-accept="image/*">
+          <div class="photo-slot-empty"><div class="ps-icon">🐜</div><div class="ps-label">BEFORE #1</div></div>
+          <img id="pimg-ba_before1" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+        <div class="photo-slot" id="pslot-ba_after1" data-key="ba_after1" data-accept="image/*">
+          <div class="photo-slot-empty"><div class="ps-icon">✨</div><div class="ps-label">AFTER #1</div></div>
+          <img id="pimg-ba_after1" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+        <div class="photo-slot" id="pslot-ba_before2" data-key="ba_before2" data-accept="image/*">
+          <div class="photo-slot-empty"><div class="ps-icon">🪳</div><div class="ps-label">BEFORE #2</div></div>
+          <img id="pimg-ba_before2" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+        <div class="photo-slot" id="pslot-ba_after2" data-key="ba_after2" data-accept="image/*">
+          <div class="photo-slot-empty"><div class="ps-icon">✨</div><div class="ps-label">AFTER #2</div></div>
+          <img id="pimg-ba_after2" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+        <div class="photo-slot wide" id="pslot-yard_sign" data-key="yard_sign" data-accept="image/*">
+          <div class="photo-slot-empty"><div class="ps-icon">🪧</div><div class="ps-label">YARD SIGN (SLIDE 4)</div></div>
+          <img id="pimg-yard_sign" src="" alt="" style="display:none;">
+          <div class="photo-slot-check">✓</div>
+        </div>
+      </div>
+
+      <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-top:12px;line-height:1.6;">
+        TAP ANY SLOT TO UPLOAD · PHOTOS SAVE TO THIS DEVICE · GREEN CHECK = UPLOADED
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div id="slides">
+
+<!-- S1: HERO -->
+<div class="slide active" id="s1">
+  <div class="bg-grid"></div>
+  <div class="hero-content">
+    <div class="bug-mark">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="36" fill="rgba(255,87,34,0.08)" stroke="#ff5722" stroke-width="1.5"/>
+        <path d="M16 50L30 28L40 42L50 24L64 50Z" fill="rgba(255,87,34,0.15)" stroke="#ff5722" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="50" cy="22" r="3" fill="#ffb13d"/>
+      </svg>
+    </div>
+    <h1>LAVA ROCK<span>PEST CONTROL</span></h1>
+    <div class="tagline">// NOTHING GETS PAST THE LINE //</div>
+    <div class="trust-row">
+      <div class="trust-badge">🏆 LICENSED &amp; INSURED</div>
+      <div class="trust-badge">⭐ LOCALLY OWNED</div>
+      <div class="trust-badge">🦂 SCORPION SPECIALISTS</div>
+    </div>
+    <div class="status-bar">
+      <div class="stat-pill"><div class="num">48HR</div><div class="lbl">Re-Treat</div></div>
+      <div class="stat-pill"><div class="num">5★</div><div class="lbl">Reviews</div></div>
+      <div class="stat-pill"><div class="num">Pet</div><div class="lbl">Safe Options</div></div>
+    </div>
+    <div class="pulse-hint"><div class="pulse-dot"></div><span>TAP BUTTONS TO NAVIGATE</span></div>
+  </div>
+</div>
+
+<!-- S2: TREATMENT ZONES -->
+<div class="slide" id="s2">
+  <div class="s2-inner">
+    <div class="s2-head">
+      <h2>YOUR PROTECTION PLAN</h2>
+      <div class="sub">// TAP ANY ZONE FOR DETAILS //</div>
+    </div>
+    <div class="zone-grid">
+      <div class="zone-card" onclick="openDevice('zone_perimeter')">
+        <div class="zone-title">Exterior Perimeter</div>
+        <div class="img-wrapper"><img class="media-slot" id="img-zone_perimeter" src="" alt=" "></div>
+        <div class="zone-badge">CORE</div>
+      </div>
+      <div class="zone-card" onclick="openDevice('zone_interior')">
+        <div class="zone-title">Interior Treatment</div>
+        <div class="img-wrapper"><img class="media-slot" id="img-zone_interior" src="" alt=" "></div>
+        <div class="zone-badge">AS NEEDED</div>
+      </div>
+      <div class="zone-card" onclick="openDevice('zone_termite')">
+        <div class="zone-title">Termite Stations</div>
+        <div class="img-wrapper"><img class="media-slot" id="img-zone_termite" src="" alt=" "></div>
+        <div class="zone-badge">ADD-ON</div>
+      </div>
+      <div class="zone-card" onclick="openDevice('zone_mosquito')">
+        <div class="zone-title">Mosquito &amp; Lawn</div>
+        <div class="img-wrapper"><img class="media-slot" id="img-zone_mosquito" src="" alt=" "></div>
+        <div class="zone-badge">SEASONAL</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S3: BEFORE / AFTER -->
+<div class="slide" id="s3">
+  <div class="s3-inner">
+    <div class="s3-head">
+      <h2>REAL RESULTS</h2>
+      <div class="sub">// FROM HOMES IN YOUR AREA //</div>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-feed">
+        <img class="media-slot" id="img-ba_before1" src="" alt=" ">
+        <div class="ba-overlay"><div class="ba-top"><div class="ba-label">CASE 1</div><div class="ba-tag before">BEFORE</div></div></div>
+      </div>
+      <div class="ba-feed">
+        <img class="media-slot" id="img-ba_after1" src="" alt=" ">
+        <div class="ba-overlay"><div class="ba-top"><div class="ba-label">CASE 1</div><div class="ba-tag after">AFTER</div></div></div>
+      </div>
+      <div class="ba-feed">
+        <img class="media-slot" id="img-ba_before2" src="" alt=" ">
+        <div class="ba-overlay"><div class="ba-top"><div class="ba-label">CASE 2</div><div class="ba-tag before">BEFORE</div></div></div>
+      </div>
+      <div class="ba-feed">
+        <img class="media-slot" id="img-ba_after2" src="" alt=" ">
+        <div class="ba-overlay"><div class="ba-top"><div class="ba-label">CASE 2</div><div class="ba-tag after">AFTER</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S4: YARD SIGN -->
+<div class="slide" id="s4">
+  <div style="text-align:center;">
+    <div class="yard-sign-wrapper">
+      <img class="media-slot" id="img-yard_sign" src="" alt=" " style="filter:drop-shadow(0 0 36px rgba(255,87,34,0.18));border-radius:10px;">
+    </div>
+    <div class="sign-caption">Every home we treat gets a<br><span>visible sign</span> at the curb</div>
+  </div>
+</div>
+
+<!-- S5: WHY US -->
+<div class="slide" id="s5">
+  <h2>WHY LAVA ROCK</h2>
+  <div class="sub">// WHAT CHANGES THIS WEEK //</div>
+  <div class="feature-list">
+    <div class="feature-item"><div class="feature-icon">🦂</div><div class="feature-text"><h3>Built for Arizona scorpions, not just ants</h3><p>Bark scorpions climb stucco and walls to get inside. Our exterior barrier targets them specifically — most national chains treat them as an afterthought.</p></div></div>
+    <div class="feature-item"><div class="feature-icon">🔁</div><div class="feature-text"><h3>Free re-treats between visits</h3><p>See activity before your next scheduled service? We come back at no charge — that's the guarantee.</p></div></div>
+    <div class="feature-item"><div class="feature-icon">🐾</div><div class="feature-text"><h3>Pet &amp; kid-safe product options</h3><p>EPA-registered products applied by licensed techs, with low-tox options available on request.</p></div></div>
+    <div class="feature-item"><div class="feature-icon">🌱</div><div class="feature-text"><h3>One company, full coverage</h3><p>Pest, termite monitoring, and mosquito/lawn — bundle it and stop juggling three vendors.</p></div></div>
+  </div>
+</div>
+
+<!-- S6: TESTIMONIALS -->
+<div class="slide" id="s6">
+  <div class="testi-wrap">
+    <div class="testi-header">// REAL CUSTOMERS · REAL RESULTS //</div>
+    <div id="testi-display">
+      <div class="stars">★★★★★</div>
+      <div class="testi-quote" id="testi-q">"Had a roach problem we couldn't shake for a year. Two visits in, gone. They actually show up when they say they will, too."</div>
+      <div class="testi-person">
+        <div class="testi-avatar"><div class="testi-avatar-ph">👩</div></div>
+        <div>
+          <div class="testi-name" id="testi-name">SARAH M.</div>
+          <div class="testi-city" id="testi-city">YOUR AREA · CUSTOMER</div>
+          <div class="testi-detail" id="testi-detail">General Pest Plan · 8 months ago</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-nav" id="testi-nav"></div>
+  </div>
+</div>
+
+<!-- S7: PEST PRESSURE -->
+<div class="slide" id="s8">
+  <div class="crime-wrap">
+    <h2>THE REALITY</h2>
+    <div class="crime-city" id="crime-city-label">ARIZONA SCORPION SEASON</div>
+    <div class="crime-big">20K+</div>
+    <div class="crime-unit">SCORPION-RELATED CALLS TO AZ POISON CONTROL EVERY YEAR</div>
+    <div class="crime-stats">
+      <div class="crime-stat"><div class="cn">98%</div><div class="cl">OF BARK SCORPION STINGS HAPPEN IN OR AROUND THE HOME</div></div>
+      <div class="crime-stat"><div class="cn">Mar–Oct</div><div class="cl">PEAK ACTIVITY SEASON, WORST IN JUL–AUG</div></div>
+      <div class="crime-stat"><div class="cn">33%</div><div class="cl">OF STINGS HAPPEN RIGHT IN THE BEDROOM</div></div>
+    </div>
+    <div class="crime-divider">🦂 Bark scorpions climb stucco, drywall, and bed skirts — exterior barrier treatment is what keeps them from ever reaching the inside of your home</div>
+  </div>
+</div>
+
+<!-- S8: HOW IT WORKS TIMELINE -->
+<div class="slide" id="s9">
+  <h2>HOW SERVICE WORKS</h2>
+  <div class="sub">// FROM FIRST VISIT TO ONGOING PROTECTION //</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-circle">🔍</div><div class="tl-line"></div></div>
+      <div class="tl-content"><div class="tl-time">VISIT 1</div><div class="tl-title">Full Inspection</div><div class="tl-desc">We walk the property inside and out, identify entry points and active pressure, and explain exactly what we find.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-circle">🧪</div><div class="tl-line"></div></div>
+      <div class="tl-content"><div class="tl-time">VISIT 1</div><div class="tl-title">Initial Treatment</div><div class="tl-desc">Perimeter barrier applied, interior treated where needed, termite/mosquito add-ons set up if selected.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-circle">📅</div><div class="tl-line"></div></div>
+      <div class="tl-content"><div class="tl-time">ONGOING</div><div class="tl-title">Recurring Service</div><div class="tl-desc">Scheduled visits keep the barrier active. We call/text ahead — no surprise trucks in the driveway.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-circle">✅</div></div>
+      <div class="tl-content"><div class="tl-time">ANYTIME</div><div class="tl-title">See Something? We Re-Treat Free</div><div class="tl-desc">Activity between visits gets a free callback — that's part of every plan, not an upsell.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S9: PACKAGES -->
+<div class="slide" id="s10">
+  <h2>PICK YOUR PLAN</h2>
+  <div class="sub">// TAP A PACKAGE TO SELECT //</div>
+  <div class="pkg-grid" id="pkg-grid">
+    <div class="pkg-card" data-pkg="0" onclick="selectPkg(0)">
+      <div class="pkg-name">BASIC</div>
+      <div class="pkg-price" id="pkg-price-0">$39</div>
+      <div class="pkg-price-unit">/MO · GENERAL PEST</div>
+      <div class="pkg-features">
+        <div class="pkg-feat yes"><span class="chk">✓</span>Quarterly Service</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Exterior Perimeter</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Ants, Roaches, Spiders</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Free Re-Treats</div>
+        <div class="pkg-feat"><span class="x">✕</span>Termite Monitoring</div>
+        <div class="pkg-feat"><span class="x">✕</span>Mosquito/Lawn</div>
+      </div>
+      <div class="pkg-select-btn">SELECT</div>
+    </div>
+    <div class="pkg-card best" data-pkg="1" onclick="selectPkg(1)">
+      <div class="pkg-best-badge">MOST POPULAR</div>
+      <div class="pkg-name">COMPLETE</div>
+      <div class="pkg-price" id="pkg-price-1">$59</div>
+      <div class="pkg-price-unit">/MO · PEST + TERMITE</div>
+      <div class="pkg-features">
+        <div class="pkg-feat yes"><span class="chk">✓</span>Everything in Basic</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Termite Bait Stations</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Interior Treatment</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Rodent Monitoring</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Priority Scheduling</div>
+        <div class="pkg-feat"><span class="x">✕</span>Mosquito/Lawn</div>
+      </div>
+      <div class="pkg-select-btn">SELECT</div>
+    </div>
+    <div class="pkg-card" data-pkg="2" onclick="selectPkg(2)">
+      <div class="pkg-name">TOTAL YARD</div>
+      <div class="pkg-price" id="pkg-price-2">$89</div>
+      <div class="pkg-price-unit">/MO · FULL COVERAGE</div>
+      <div class="pkg-features">
+        <div class="pkg-feat yes"><span class="chk">✓</span>Everything in Complete</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Mosquito Misting (Season)</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Lawn Pest Treatment</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Tick &amp; Flea Control</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Same-Week Callbacks</div>
+        <div class="pkg-feat yes"><span class="chk">✓</span>Annual Inspection Report</div>
+      </div>
+      <div class="pkg-select-btn">SELECT</div>
+    </div>
+  </div>
+  <div class="pkg-savings" id="pkg-savings">TAP A PACKAGE ABOVE TO SEE WHAT'S INCLUDED</div>
+</div>
+
+<!-- S10: OBJECTIONS -->
+<div class="slide" id="s11">
+  <h2>HEARD THAT BEFORE</h2>
+  <div class="sub">// TAP TO SEE THE ANSWER //</div>
+  <div class="obj-list">
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-question"><span>"I spray myself / use store stuff."</span><span class="arrow">›</span></div>
+      <div class="obj-answer">Store products knock down what you can see today — they don't treat the colony or seal entry points. Our techs are licensed to use products that aren't available over the counter, applied as a barrier, not a one-time spray.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-question"><span>"I don't see bugs, so I don't need it."</span><span class="arrow">›</span></div>
+      <div class="obj-answer">That's actually the goal — recurring service means you never see them, because we treat before it's a problem. Most infestations start behind walls, in the attic, or underground long before they're visible inside.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-question"><span>"Are the chemicals safe for my kids/pets?"</span><span class="arrow">›</span></div>
+      <div class="obj-answer">We use EPA-registered products applied by licensed, trained techs, and treatments are dry and safe to be around well before you're typically even home. Low-tox options are available if you'd prefer them.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-question"><span>"Need to talk to my spouse."</span><span class="arrow">›</span></div>
+      <div class="obj-answer">Totally fair — that's why I'm here in person instead of leaving a flyer. No money today if you want to think it over, I just want to get you a real quote you can actually discuss together.</div>
+    </div>
+    <div class="obj-item" onclick="toggleObj(this)">
+      <div class="obj-question"><span>"I'm renting / not the owner."</span><span class="arrow">›</span></div>
+      <div class="obj-answer">No problem — we treat plenty of rentals. We can bill you directly, or loop in your landlord/property manager. Pest issues tend to be a shared interest for everyone involved.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S11: DAMAGE / SAVINGS CALC -->
+<div class="slide" id="s12">
+  <div class="ins-wrap">
+    <h2>IT PAYS FOR ITSELF</h2>
+    <div class="sub">// DRAG TO SEE THE MATH //</div>
+    <div class="ins-card">
+      <div class="ins-row">
+        <div class="ins-label">YOUR MONTHLY SERVICE</div>
+        <div class="ins-value green" id="ins-monthly">$59/mo</div>
+      </div>
+      <div class="ins-row">
+        <div class="ins-label">COST PER DAY</div>
+        <div class="ins-value amber" id="ins-discount">~$1.97/day</div>
+      </div>
+      <div class="ins-row">
+        <div class="ins-label">ANNUAL PLAN COST</div>
+        <div class="ins-value" id="ins-effective">$708/yr</div>
+      </div>
+    </div>
+    <div class="slider-wrap">
+      <div class="slider-label"><span>ESTIMATED COST OF AN UNTREATED INFESTATION</span><span id="ins-slider-val">$1,500</span></div>
+      <input type="range" id="ins-slider" min="500" max="6000" step="100" value="1500">
+    </div>
+    <div class="ins-result">
+      <div class="ins-result-big" id="ins-annual-save">$792</div>
+      <div class="ins-result-label">ESTIMATED SAVINGS VS. PAYING FOR DAMAGE / EMERGENCY TREATMENT</div>
+    </div>
+  </div>
+</div>
+
+<!-- S12: CLOSER -->
+<div class="slide" id="s13">
+  <div class="closer-content">
+    <div class="headline">YOUR HOME<br><span>DRAW THE LINE.</span></div>
+    <p class="body-copy">One plan. One sign. One call — and pests stop being your problem.</p>
+    <div class="urgency-strip">⚡ IN THIS NEIGHBORHOOD TODAY ONLY</div>
+    <a class="cta-btn" href="sms:&body=Get your quote: https://example.com/quote" id="imessage-btn">📲 GET YOUR QUOTE — TEXT THE LINK</a>
+    <a class="cta-btn-secondary" href="https://example.com/quote" target="_blank" id="quote-link-btn">OPEN QUOTE FORM →</a>
+    <div class="qr-row">
+      <div class="qr-box">
+        <img id="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=https://example.com/quote&bgcolor=ffffff&color=000000&margin=4" alt="QR">
+      </div>
+      <div class="qr-label" id="qr-label">SCAN WITH YOUR CAMERA<br>→ example.com/quote<br>GET A QUOTE IN 2 MINUTES</div>
+    </div>
+    <div class="guarantee">✓ Free re-treats &nbsp;·&nbsp; ✓ Licensed &amp; insured &nbsp;·&nbsp; ✓ No long-term contract</div>
+    <div class="rep-card">
+      <div class="rep-avatar">🧑</div>
+      <div>
+        <div class="rep-name" id="rep-name-display">YOUR NAME</div>
+        <div class="rep-title" id="rep-company-display">LAVA ROCK PEST CONTROL · FIELD SPECIALIST</div>
+        <div class="rep-phone" id="rep-phone-display">TAP ⚙️ TO SET YOUR INFO</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end #slides -->
+
+<div id="nav"></div>
+<div id="tap-hint">USE BUTTONS TO NAVIGATE</div>
+
+<script>
+const TOTAL = 12;
+const ALL_MEDIA_KEYS = ['zone_perimeter','zone_interior','zone_termite','zone_mosquito','ba_before1','ba_after1','ba_before2','ba_after2','yard_sign'];
+
+// ── INDEXEDDB ──
+const DB_NAME = "LavaRockVault1";
+let db;
+function initDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_NAME,1);
+    r.onupgradeneeded=e=>{db=e.target.result;if(!db.objectStoreNames.contains("media"))db.createObjectStore("media");};
+    r.onsuccess=e=>{db=e.target.result;res();};
+    r.onerror=()=>rej();
+  });
+}
+function dbSet(key,val){const tx=db.transaction("media","readwrite");tx.objectStore("media").put(val,key);}
+function dbGet(key){return new Promise(res=>{const tx=db.transaction("media","readonly");const r=tx.objectStore("media").get(key);r.onsuccess=()=>res(r.result);r.onerror=()=>res(null);});}
+
+// ── NAV DOTS ──
+(function buildNav(){
+  const nav=document.getElementById('nav');
+  for(let i=0;i<TOTAL;i++){
+    const d=document.createElement('div');
+    d.className='dot'+(i===0?' active':'');
+    d.onclick=(()=>{const n=i;return()=>goTo(n);})();
+    nav.appendChild(d);
+  }
+})();
+
+let current=0;
+function goTo(n){
+  const slides=document.querySelectorAll('.slide');
+  const dots=document.querySelectorAll('.dot');
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  setTimeout(()=>slides[current].classList.remove('exit'),500);
+  dots[current].classList.remove('active');
+  current=n;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+}
+function nextSlide(){if(!modalOpen()&&!settingsOpen())goTo((current+1)%TOTAL);}
+function prevSlide(){if(!modalOpen()&&!settingsOpen())goTo((current-1+TOTAL)%TOTAL);}
+function modalOpen(){return document.getElementById('device-modal').classList.contains('open');}
+function settingsOpen(){return document.getElementById('settings-panel').classList.contains('open');}
+
+document.getElementById('prev-btn').addEventListener('click',prevSlide);
+document.getElementById('next-btn').addEventListener('click',nextSlide);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')nextSlide();if(e.key==='ArrowLeft')prevSlide();});
+document.getElementById('next-btn').addEventListener('click',()=>{document.getElementById('tap-hint').style.opacity='0';},{once:true});
+document.getElementById('prev-btn').addEventListener('click',()=>{document.getElementById('tap-hint').style.opacity='0';},{once:true});
+
+// ── CLOCK ──
+function updateClock(){
+  const now=new Date();
+  document.getElementById('clock').textContent=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+}
+setInterval(updateClock,1000);updateClock();
+
+// ── SETTINGS PANEL ──
+document.getElementById('edit-btn').addEventListener('click',()=>{
+  const panel=document.getElementById('settings-panel');
+  const btn=document.getElementById('edit-btn');
+  if(panel.classList.contains('open')){
+    panel.classList.remove('open');
+    btn.classList.remove('active');
+  } else {
+    panel.classList.add('open');
+    btn.classList.add('active');
+  }
+});
+document.getElementById('settings-close-btn').addEventListener('click',closeSettings);
+
+document.querySelectorAll('.stab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('settings-save-btn').addEventListener('click',()=>{
+  const name=document.getElementById('set-name').value.trim()||'YOUR NAME';
+  const phone=document.getElementById('set-phone').value.trim()||'—';
+  const city=document.getElementById('set-city').value.trim();
+  const company=document.getElementById('set-company').value.trim();
+  const link=document.getElementById('set-link').value.trim();
+
+  document.getElementById('rep-name-display').textContent=name.toUpperCase();
+  document.getElementById('rep-phone-display').textContent=phone;
+  if(city)document.getElementById('crime-city-label').textContent='IN '+city.toUpperCase();
+  if(company){
+    document.getElementById('rep-company-display').textContent=company.toUpperCase()+' · FIELD SPECIALIST';
+    document.title=company;
+  }
+  if(link){
+    let url=link;
+    if(!/^https?:\/\//i.test(url))url='https://'+url;
+    document.getElementById('imessage-btn').href='sms:&body=Get your quote: '+url;
+    document.getElementById('quote-link-btn').href=url;
+    document.getElementById('qr-img').src='https://api.qrserver.com/v1/create-qr-code/?size=70x70&data='+encodeURIComponent(url)+'&bgcolor=ffffff&color=000000&margin=4';
+    document.getElementById('qr-label').innerHTML='SCAN WITH YOUR CAMERA<br>→ '+link+'<br>GET A QUOTE IN 2 MINUTES';
+  }
+
+  localStorage.setItem('lavarock_name',name);
+  localStorage.setItem('lavarock_phone',phone);
+  localStorage.setItem('lavarock_city',city);
+  localStorage.setItem('lavarock_company',company);
+  localStorage.setItem('lavarock_link',link);
+  closeSettings();
+});
+
+function closeSettings(){
+  document.getElementById('settings-panel').classList.remove('open');
+  document.getElementById('edit-btn').classList.remove('active');
+}
+
+function loadSettings(){
+  const name=localStorage.getItem('lavarock_name');
+  const phone=localStorage.getItem('lavarock_phone');
+  const city=localStorage.getItem('lavarock_city');
+  const company=localStorage.getItem('lavarock_company');
+  const link=localStorage.getItem('lavarock_link');
+  if(name){document.getElementById('set-name').value=name;document.getElementById('rep-name-display').textContent=name.toUpperCase();}
+  if(phone){document.getElementById('set-phone').value=phone;document.getElementById('rep-phone-display').textContent=phone;}
+  if(city){document.getElementById('set-city').value=city;document.getElementById('crime-city-label').textContent='IN '+city.toUpperCase();}
+  if(company){
+    document.getElementById('set-company').value=company;
+    document.getElementById('rep-company-display').textContent=company.toUpperCase()+' · FIELD SPECIALIST';
+    document.title=company;
+  }
+  if(link){
+    document.getElementById('set-link').value=link;
+    let url=link;
+    if(!/^https?:\/\//i.test(url))url='https://'+url;
+    document.getElementById('imessage-btn').href='sms:&body=Get your quote: '+url;
+    document.getElementById('quote-link-btn').href=url;
+    document.getElementById('qr-img').src='https://api.qrserver.com/v1/create-qr-code/?size=70x70&data='+encodeURIComponent(url)+'&bgcolor=ffffff&color=000000&margin=4';
+    document.getElementById('qr-label').innerHTML='SCAN WITH YOUR CAMERA<br>→ '+link+'<br>GET A QUOTE IN 2 MINUTES';
+  }
+}
+
+// ── UNIFIED MEDIA UPLOAD ENGINE ──
+const fileInput=document.getElementById('media-upload');
+let pendingKey=null;
+let pendingCallback=null;
+
+function triggerUpload(key,accept,callback){
+  pendingKey=key;
+  pendingCallback=callback||null;
+  fileInput.accept=accept||'image/*,video/*';
+  fileInput.value='';
+  setTimeout(()=>fileInput.click(),80);
+}
+
+fileInput.addEventListener('change',async function(){
+  const file=this.files[0];
+  const key=pendingKey;
+  const cb=pendingCallback;
+  pendingKey=null;
+  pendingCallback=null;
+  this.value='';
+  if(!file||!key)return;
+  dbSet(key,file);
+  renderMedia(key,file);
+  if(cb)cb(file);
+});
+
+function renderMedia(key,fileBlob){
+  const url=URL.createObjectURL(fileBlob);
+  const isVideo=fileBlob.type.startsWith('video/');
+
+  const imgEl=document.getElementById('img-'+key);
+  if(imgEl&&!isVideo){imgEl.src=url;imgEl.style.background='transparent';imgEl.style.display='block';}
+
+  const pimg=document.getElementById('pimg-'+key);
+  const pslot=document.getElementById('pslot-'+key);
+  if(pimg&&pslot){
+    pimg.src=url;pimg.style.display='block';
+    pslot.classList.add('has-media');
+  }
+}
+
+document.querySelectorAll('.photo-slot').forEach(slot=>{
+  slot.addEventListener('click',function(e){
+    e.stopPropagation();
+    const key=this.dataset.key;
+    const accept=this.dataset.accept||'image/*,video/*';
+    if(!key)return;
+    triggerUpload(key,accept);
+  });
+});
+
+// ── DEVICE MODAL (Slide 2 treatment zones) ──
+const deviceData={
+  zone_perimeter:{title:'EXTERIOR PERIMETER',res:'CORE TREATMENT · EVERY VISIT',desc:'A continuous treated barrier around the foundation, entry points, eaves, and weep holes — including scorpion-specific treatment, since bark scorpions climb stucco and walls to get inside.',specs:['Foundation Line','Entry Points','Eaves & Soffits','Scorpion Barrier','Every Visit','Weatherproof Product']},
+  zone_interior:{title:'INTERIOR TREATMENT',res:'AS NEEDED · INCLUDED',desc:'When activity is found inside, we treat baseboards, cracks, and entry gaps with products safe for occupied homes.',specs:['Baseboards','Crack & Crevice','Kitchen/Bath Focus','Low-Odor','Dry Fast','Included in Plan']},
+  zone_termite:{title:'TERMITE BAIT STATIONS',res:'IN-GROUND MONITORING · ADD-ON',desc:'Stations placed around the structure monitor for termite activity year-round and bait colonies before they reach the home.',specs:['In-Ground','Year-Round','Colony Elimination','Quarterly Check','Inspection Report','Add-On Plan']},
+  zone_mosquito:{title:'MOSQUITO &amp; LAWN',res:'SEASONAL MISTING · ADD-ON',desc:'Targeted misting of standing water, shaded vegetation, and resting areas to knock down mosquito and tick populations in the yard.',specs:['Standing Water','Vegetation Treat','Tick & Flea','Seasonal Visits','Pet-Safe Dry Time','Add-On Plan']}
+};
+
+let activeModalKey=null;
+
+function openDevice(key){
+  const d=deviceData[key];if(!d)return;
+  activeModalKey=key;
+  document.getElementById('modal-title').textContent=d.title;
+  document.getElementById('modal-res').textContent=d.res;
+  document.getElementById('modal-desc').textContent=d.desc;
+  document.getElementById('modal-specs').innerHTML=d.specs.map(s=>'<div class="spec-chip">'+s+'</div>').join('');
+  const imgEl=document.getElementById('modal-img');
+  const vidEl=document.getElementById('modal-vid');
+  const hint=document.getElementById('modal-upload-hint');
+  imgEl.style.display='none';vidEl.style.display='none';hint.style.display='flex';
+  dbGet(key).then(blob=>{if(blob)updateModalPreview(blob);});
+  document.getElementById('device-modal').classList.add('open');
+}
+
+function updateModalPreview(blob){
+  const url=URL.createObjectURL(blob);
+  const imgEl=document.getElementById('modal-img');
+  const vidEl=document.getElementById('modal-vid');
+  const hint=document.getElementById('modal-upload-hint');
+  if(blob.type.startsWith('video/')){
+    vidEl.src=url;vidEl.style.display='block';imgEl.style.display='none';
+  } else {
+    imgEl.src=url;imgEl.style.display='block';vidEl.style.display='none';
+  }
+  hint.style.display='none';
+}
+
+function closeModal(){
+  document.getElementById('device-modal').classList.remove('open');
+  activeModalKey=null;
+}
+
+document.getElementById('modal-close-btn').addEventListener('click',closeModal);
+document.getElementById('device-modal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('device-modal'))closeModal();
+});
+
+document.getElementById('modal-img-area').addEventListener('click',e=>{
+  e.stopPropagation();
+  if(activeModalKey){
+    triggerUpload(activeModalKey,'image/*,video/*',function(file){updateModalPreview(file);});
+  }
+});
+document.getElementById('modal-upload-btn').addEventListener('click',e=>{
+  e.stopPropagation();
+  if(activeModalKey){
+    triggerUpload(activeModalKey,'image/*',function(file){updateModalPreview(file);});
+  }
+});
+document.getElementById('modal-upload-vid-btn').addEventListener('click',e=>{
+  e.stopPropagation();
+  if(activeModalKey){
+    triggerUpload(activeModalKey,'video/*',function(file){updateModalPreview(file);});
+  }
+});
+
+// ── TESTIMONIALS ──
+const testis=[
+  {q:'"Had a roach problem we couldn\'t shake for a year. Two visits in, gone. They actually show up when they say they will, too."',name:'SARAH M.',city:'YOUR AREA · CUSTOMER',detail:'General Pest Plan · 8 months ago',icon:'👩'},
+  {q:"\"Found out we had termite activity during the inspection — would've never known otherwise. Glad we caught it early.\"",name:'MARCUS T.',city:'YOUR AREA · CUSTOMER',detail:'Complete Plan · 14 months ago',icon:'👨'},
+  {q:'"We couldn\'t use the backyard in summer because of mosquitoes. First treatment made a real difference within a couple days."',name:'JENNIFER R.',city:'YOUR AREA · CUSTOMER',detail:'Total Yard Plan · 6 months ago',icon:'👩‍💼'},
+  {q:'"Switched from the big national company. Same tech shows up every time, actually knows our property. Way better service."',name:'DEREK K.',city:'YOUR AREA · CUSTOMER',detail:'Complete Plan · 11 months ago',icon:'🧔'}
+];
+let testiIdx=0;
+function buildTestiNav(){
+  const nav=document.getElementById('testi-nav');
+  testis.forEach((_,i)=>{const d=document.createElement('div');d.className='testi-dot'+(i===0?' active':'');d.onclick=()=>showTesti(i);nav.appendChild(d);});
+}
+function showTesti(i){
+  testiIdx=i;const t=testis[i];
+  document.getElementById('testi-q').textContent=t.q;
+  document.getElementById('testi-name').textContent=t.name;
+  document.getElementById('testi-city').textContent=t.city;
+  document.getElementById('testi-detail').textContent=t.detail;
+  document.querySelector('.testi-avatar-ph').textContent=t.icon;
+  document.querySelectorAll('.testi-dot').forEach((d,idx)=>d.classList.toggle('active',idx===i));
+}
+buildTestiNav();
+
+// ── PACKAGES ──
+const pkgSavings=['Quarterly general pest · Foundation barrier · Free re-treats between visits','Most popular · Pest + termite monitoring + interior coverage','Full property coverage · Pest, termite, mosquito & lawn in one plan'];
+function selectPkg(i){
+  document.querySelectorAll('.pkg-card').forEach((c,idx)=>c.classList.toggle('selected',idx===i));
+  document.getElementById('pkg-savings').textContent=pkgSavings[i];
+}
+
+// ── OBJECTIONS ──
+function toggleObj(el){
+  const was=el.classList.contains('open');
+  document.querySelectorAll('.obj-item').forEach(i=>i.classList.remove('open'));
+  if(!was)el.classList.add('open');
+}
+
+// ── DAMAGE / SAVINGS CALC ──
+function updateInsCalc(){
+  const slider=document.getElementById('ins-slider');
+  const damage=parseInt(slider.value);
+  const monthly=59,daily=(monthly*12/365).toFixed(2),annual=monthly*12;
+  const save=damage-annual;
+  document.getElementById('ins-slider-val').textContent='$'+damage.toLocaleString();
+  document.getElementById('ins-monthly').textContent='$'+monthly+'/mo';
+  document.getElementById('ins-discount').textContent='~$'+daily+'/day';
+  document.getElementById('ins-effective').textContent='$'+annual.toLocaleString()+'/yr';
+  document.getElementById('ins-annual-save').textContent=(save>=0?'$'+save.toLocaleString():'—');
+}
+const insSlider=document.getElementById('ins-slider');
+insSlider.addEventListener('input',updateInsCalc);
+['touchstart','touchmove','touchend'].forEach(ev=>insSlider.addEventListener(ev,e=>e.stopPropagation(),{passive:true}));
+updateInsCalc();
+
+// ── ON LOAD ──
+window.addEventListener('DOMContentLoaded',async()=>{
+  await initDB();
+  for(const key of ALL_MEDIA_KEYS){
+    const b=await dbGet(key);
+    if(b)renderMedia(key,b);
+  }
+  loadSettings();
+});
+</script>
+</body>
+</html>

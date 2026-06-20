@@ -245,27 +245,41 @@ html,body{width:100%;height:100%;background:var(--dark);font-family:'Inter',sans
 .tl-title{font-size:15px;color:#fff;font-weight:700;margin-bottom:2px;margin-top:3px;}
 .tl-desc{font-size:12px;color:var(--text-dim);line-height:1.4;}
 
-/* ── S9: PACKAGES ── */
-#s10{background:var(--dark);padding:20px 16px 64px;justify-content:center;}
-#s10 h2{font-family:'Archivo Black',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;text-align:center;}
-#s10 .sub{text-align:center;margin-bottom:16px;}
-.pkg-grid{display:flex;gap:10px;width:100%;}
-.pkg-card{flex:1;background:#0d130b;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;cursor:pointer;transition:all 0.2s;position:relative;}
-.pkg-card.selected{border-color:var(--lime);box-shadow:0 0 20px rgba(255,87,34,0.12);}
-.pkg-card.best{border-color:var(--amber);}
-.pkg-card.best.selected{border-color:var(--amber);box-shadow:0 0 20px rgba(232,163,61,0.2);}
-.pkg-best-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amber);color:#000;font-family:'Space Mono',monospace;font-size:8px;padding:2px 8px;border-radius:3px;white-space:nowrap;letter-spacing:1px;font-weight:700;}
-.pkg-name{font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:0.5px;color:#fff;margin-bottom:4px;}
-.pkg-price{font-family:'Archivo Black',sans-serif;font-size:32px;color:var(--lime);line-height:1;}
-.pkg-price-unit{font-family:'Space Mono',monospace;font-size:8px;color:var(--text-dim);margin-bottom:10px;}
-.pkg-features{display:flex;flex-direction:column;gap:5px;flex:1;}
-.pkg-feat{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.3px;display:flex;gap:5px;align-items:flex-start;}
-.pkg-feat.yes{color:var(--text);}
+/* ── S9: PACKAGES (size-based pricing table) ── */
+#s10{background:var(--dark);padding:22px 16px 64px;justify-content:flex-start;}
+#s10 h2{font-family:'Archivo Black',sans-serif;font-size:26px;letter-spacing:1px;color:#fff;text-align:center;}
+#s10 .sub{text-align:center;margin-bottom:14px;}
+.sqft-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;}
+.sqft-btn{background:#0d130b;border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:8px 4px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.sqft-btn.selected{border-color:var(--lime);background:rgba(255,87,34,0.08);box-shadow:0 0 14px rgba(255,87,34,0.15);}
+.sqft-btn .sb-range{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.5px;display:block;}
+.sqft-btn.selected .sb-range{color:var(--lime);}
+.pkg-price-card{background:#0d130b;border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;margin-bottom:12px;}
+.pkg-price-card .pp-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:2px;margin-bottom:6px;}
+.pkg-price-row{display:flex;justify-content:center;align-items:flex-end;gap:18px;}
+.pkg-price-col{display:flex;flex-direction:column;align-items:center;}
+.pkg-price-col .ppc-amt{font-family:'Archivo Black',sans-serif;font-size:34px;color:var(--lime);line-height:1;}
+.pkg-price-col.initial .ppc-amt{color:var(--amber);font-size:26px;}
+.pkg-price-col .ppc-lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-top:4px;}
+.pkg-price-divider{width:1px;align-self:stretch;background:var(--border);}
+.pkg-features{display:flex;flex-direction:column;gap:6px;margin-top:14px;text-align:left;}
+.pkg-feat{font-family:'Space Mono',monospace;font-size:10px;color:var(--text);letter-spacing:0.3px;display:flex;gap:6px;align-items:flex-start;}
 .pkg-feat .chk{color:var(--lime);flex-shrink:0;}
-.pkg-feat .x{color:var(--text-dim);opacity:0.4;flex-shrink:0;}
-.pkg-select-btn{margin-top:10px;padding:7px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;transition:all 0.2s;letter-spacing:1px;text-align:center;}
-.pkg-card.selected .pkg-select-btn{background:var(--lime);color:#000;border-color:var(--lime);font-weight:700;}
-.pkg-savings{margin-top:14px;text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:var(--lime);letter-spacing:1px;background:rgba(255,87,34,0.05);border:1px solid rgba(255,87,34,0.12);padding:8px;border-radius:6px;}
+.pkg-warranty-note{margin-top:14px;text-align:center;font-family:'Space Mono',monospace;font-size:9px;color:var(--lime);letter-spacing:1px;background:rgba(255,87,34,0.05);border:1px solid rgba(255,87,34,0.12);padding:8px 10px;border-radius:6px;line-height:1.6;}
+.pkg-addon-teaser{margin-top:10px;text-align:center;font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;}
+.pkg-addon-teaser span{color:var(--amber);}
+
+/* ── S9b: ADD-ONS ── */
+#s10b{background:var(--dark2);padding:26px 20px 64px;justify-content:flex-start;}
+#s10b h2{font-family:'Archivo Black',sans-serif;font-size:26px;letter-spacing:1px;color:#fff;text-align:center;}
+#s10b .sub{text-align:center;margin-bottom:14px;}
+.addon-list{display:flex;flex-direction:column;gap:7px;}
+.addon-row{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;padding:10px 14px;}
+.addon-name{font-size:13px;color:var(--text);font-weight:600;}
+.addon-name .an-icon{margin-right:8px;}
+.addon-price{font-family:'Archivo Black',sans-serif;font-size:15px;color:var(--lime);white-space:nowrap;}
+.addon-price.quote{font-family:'Space Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:1px;}
+.addon-note{margin-top:14px;text-align:center;font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;line-height:1.7;}
 
 /* ── S10: OBJECTIONS ── */
 #s11{background:var(--dark);padding:30px 24px 64px;justify-content:center;}
@@ -692,54 +706,59 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </div>
 
 <div class="slide" id="s10">
-  <h2>PICK YOUR PLAN</h2>
-  <div class="sub">// TAP A PACKAGE TO SELECT //</div>
-  <div class="pkg-grid" id="pkg-grid">
-    <div class="pkg-card" data-pkg="0" onclick="selectPkg(0)">
-      <div class="pkg-name">BASIC</div>
-      <div class="pkg-price" id="pkg-price-0">$39</div>
-      <div class="pkg-price-unit">/MO · GENERAL PEST</div>
-      <div class="pkg-features">
-        <div class="pkg-feat yes"><span class="chk">✓</span>Quarterly Service</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Exterior Perimeter</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Ants, Roaches, Spiders</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Free Re-Treats</div>
-        <div class="pkg-feat"><span class="x">✕</span>Termite Monitoring</div>
-        <div class="pkg-feat"><span class="x">✕</span>Mosquito/Lawn</div>
+  <h2>PICK YOUR HOME SIZE</h2>
+  <div class="sub">// TAP YOUR SQUARE FOOTAGE //</div>
+  <div class="sqft-picker" id="sqft-picker">
+    <div class="sqft-btn" data-i="0" onclick="selectSqft(0)"><span class="sb-range">TOWNHOME</span></div>
+    <div class="sqft-btn" data-i="1" onclick="selectSqft(1)"><span class="sb-range">UNDER 2,000</span></div>
+    <div class="sqft-btn selected" data-i="2" onclick="selectSqft(2)"><span class="sb-range">2,000–2,999</span></div>
+    <div class="sqft-btn" data-i="3" onclick="selectSqft(3)"><span class="sb-range">3,000–3,999</span></div>
+    <div class="sqft-btn" data-i="4" onclick="selectSqft(4)"><span class="sb-range">4,000–4,999</span></div>
+    <div class="sqft-btn" data-i="5" onclick="selectSqft(5)"><span class="sb-range">5,000–5,999</span></div>
+    <div class="sqft-btn" data-i="6" onclick="selectSqft(6)"><span class="sb-range">6,000–6,999</span></div>
+    <div class="sqft-btn" data-i="7" onclick="selectSqft(7)"><span class="sb-range">7,000–7,999</span></div>
+  </div>
+  <div class="pkg-price-card">
+    <div class="pp-label">GENERAL PEST SERVICE</div>
+    <div class="pkg-price-row">
+      <div class="pkg-price-col initial">
+        <div class="ppc-amt" id="sqft-initial">$399</div>
+        <div class="ppc-lbl">INITIAL VISIT</div>
       </div>
-      <div class="pkg-select-btn">SELECT</div>
+      <div class="pkg-price-divider"></div>
+      <div class="pkg-price-col">
+        <div class="ppc-amt" id="sqft-regular">$179</div>
+        <div class="ppc-lbl">REGULAR / MO</div>
+      </div>
     </div>
-    <div class="pkg-card best" data-pkg="1" onclick="selectPkg(1)">
-      <div class="pkg-best-badge">MOST POPULAR</div>
-      <div class="pkg-name">COMPLETE</div>
-      <div class="pkg-price" id="pkg-price-1">$59</div>
-      <div class="pkg-price-unit">/MO · PEST + TERMITE</div>
-      <div class="pkg-features">
-        <div class="pkg-feat yes"><span class="chk">✓</span>Everything in Basic</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Termite Bait Stations</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Interior Treatment</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Rodent Monitoring</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Priority Scheduling</div>
-        <div class="pkg-feat"><span class="x">✕</span>Mosquito/Lawn</div>
-      </div>
-      <div class="pkg-select-btn">SELECT</div>
-    </div>
-    <div class="pkg-card" data-pkg="2" onclick="selectPkg(2)">
-      <div class="pkg-name">TOTAL YARD</div>
-      <div class="pkg-price" id="pkg-price-2">$89</div>
-      <div class="pkg-price-unit">/MO · FULL COVERAGE</div>
-      <div class="pkg-features">
-        <div class="pkg-feat yes"><span class="chk">✓</span>Everything in Complete</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Mosquito Misting (Season)</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Lawn Pest Treatment</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Tick &amp; Flea Control</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Same-Week Callbacks</div>
-        <div class="pkg-feat yes"><span class="chk">✓</span>Annual Inspection Report</div>
-      </div>
-      <div class="pkg-select-btn">SELECT</div>
+    <div class="pkg-features">
+      <div class="pkg-feat"><span class="chk">✓</span>Exterior perimeter barrier</div>
+      <div class="pkg-feat"><span class="chk">✓</span>Ants, roaches, spiders &amp; scorpions</div>
+      <div class="pkg-feat"><span class="chk">✓</span>Free re-services on selected plans</div>
+      <div class="pkg-feat"><span class="chk">✓</span>Mosquito add-on available, billed monthly</div>
     </div>
   </div>
-  <div class="pkg-savings" id="pkg-savings">TAP A PACKAGE ABOVE TO SEE WHAT'S INCLUDED</div>
+  <div class="pkg-warranty-note">🛡️ Based on a new 18-month service plan · full 18-month warranty with free re-services included</div>
+  <div class="pkg-addon-teaser">8,000+ sq ft or multiple structures? <span>Custom quote — just ask.</span></div>
+</div>
+
+<div class="slide" id="s10b">
+  <h2>ADD-ON SERVICES</h2>
+  <div class="sub">// PROTECT EVERY PART OF YOUR PROPERTY //</div>
+  <div class="addon-list">
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🕸️</span>Garage Web Removal &amp; Spray</div><div class="addon-price quote">QUOTE</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🏚️</span>Additional Structure</div><div class="addon-price quote">QUOTE</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🔧</span>Crack &amp; Crevice</div><div class="addon-price">$100</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🪵</span>Deck</div><div class="addon-price">$50</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🪴</span>Patio</div><div class="addon-price">$50</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🏊</span>Pool Perimeter</div><div class="addon-price">$50</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">⛺</span>Pergola</div><div class="addon-price">$50</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🛝</span>Playset</div><div class="addon-price">$50</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🗄️</span>Shed</div><div class="addon-price">$30</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🔥</span>Fire Pit</div><div class="addon-price">$30</div></div>
+    <div class="addon-row"><div class="addon-name"><span class="an-icon">🦟</span>Pest &amp; Mosquito Bundle</div><div class="addon-price quote">QUOTE · BILLED MONTHLY</div></div>
+  </div>
+  <div class="addon-note">Pest &amp; Mosquito includes grub control program · Promotions available for Vets, Seniors, Servicemen, Essential Workers, Educators &amp; 1st-time pest control users</div>
 </div>
 
 <div class="slide" id="s11">
@@ -776,23 +795,23 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="ins-card">
       <div class="ins-row">
         <div class="ins-label">YOUR MONTHLY SERVICE</div>
-        <div class="ins-value green" id="ins-monthly">$59/mo</div>
+        <div class="ins-value green" id="ins-monthly">$179/mo</div>
       </div>
       <div class="ins-row">
         <div class="ins-label">COST PER DAY</div>
-        <div class="ins-value amber" id="ins-discount">~$1.97/day</div>
+        <div class="ins-value amber" id="ins-discount">~$5.89/day</div>
       </div>
       <div class="ins-row">
         <div class="ins-label">ANNUAL PLAN COST</div>
-        <div class="ins-value" id="ins-effective">$708/yr</div>
+        <div class="ins-value" id="ins-effective">$2,148/yr</div>
       </div>
     </div>
     <div class="slider-wrap">
-      <div class="slider-label"><span>ESTIMATED COST OF AN UNTREATED INFESTATION</span><span id="ins-slider-val">$1,500</span></div>
-      <input type="range" id="ins-slider" min="500" max="6000" step="100" value="1500">
+      <div class="slider-label"><span>ESTIMATED COST OF AN UNTREATED INFESTATION</span><span id="ins-slider-val">$3,000</span></div>
+      <input type="range" id="ins-slider" min="500" max="6000" step="100" value="3000">
     </div>
     <div class="ins-result">
-      <div class="ins-result-big" id="ins-annual-save">$792</div>
+      <div class="ins-result-big" id="ins-annual-save">$852</div>
       <div class="ins-result-label">ESTIMATED SAVINGS VS. PAYING FOR DAMAGE / EMERGENCY TREATMENT</div>
     </div>
   </div>
@@ -811,7 +830,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
       </div>
       <div class="qr-label" id="qr-label">SCAN WITH YOUR CAMERA<br>→ example.com/quote<br>GET A QUOTE IN 2 MINUTES</div>
     </div>
-    <div class="guarantee">✓ Free re-treats &nbsp;·&nbsp; ✓ Licensed &amp; insured &nbsp;·&nbsp; ✓ No long-term contract</div>
+    <div class="guarantee">✓ 18-month plan, full warranty &nbsp;·&nbsp; ✓ Free re-services &nbsp;·&nbsp; ✓ Licensed &amp; insured</div>
     <div class="rep-card">
       <div class="rep-avatar">🧑</div>
       <div>
@@ -827,8 +846,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <div id="tap-hint">USE BUTTONS TO NAVIGATE</div>
 
 <script>
-// We increased TOTAL from 12 to 13 to account for the new Shield slide.
-const TOTAL = 13;
+// We increased TOTAL from 13 to 14 to account for the new Add-Ons slide.
+const TOTAL = 14;
 const ALL_MEDIA_KEYS = ['zone_perimeter','zone_interior','zone_termite','zone_mosquito','ba_before1','ba_after1','ba_before2','ba_after2','yard_sign'];
 
 // ── INDEXEDDB ──
@@ -1111,11 +1130,25 @@ function showTesti(i){
 }
 buildTestiNav();
 
-// ── PACKAGES ──
-const pkgSavings=['Quarterly general pest · Foundation barrier · Free re-treats between visits','Most popular · Pest + termite monitoring + interior coverage','Full property coverage · Pest, termite, mosquito & lawn in one plan'];
-function selectPkg(i){
-  document.querySelectorAll('.pkg-card').forEach((c,idx)=>c.classList.toggle('selected',idx===i));
-  document.getElementById('pkg-savings').textContent=pkgSavings[i];
+// ── SIZE-BASED PRICING ──
+const sqftPricing=[
+  {label:'Townhomes',initial:399,regular:159},
+  {label:'Under 2,000',initial:399,regular:169},
+  {label:'2,000–2,999',initial:399,regular:179},
+  {label:'3,000–3,999',initial:399,regular:189},
+  {label:'4,000–4,999',initial:399,regular:199},
+  {label:'5,000–5,999',initial:399,regular:209},
+  {label:'6,000–6,999',initial:399,regular:219},
+  {label:'7,000–7,999',initial:399,regular:229}
+];
+let selectedSqftIdx=2;
+function selectSqft(i){
+  selectedSqftIdx=i;
+  document.querySelectorAll('.sqft-btn').forEach((b,idx)=>b.classList.toggle('selected',idx===i));
+  const p=sqftPricing[i];
+  document.getElementById('sqft-initial').textContent='$'+p.initial;
+  document.getElementById('sqft-regular').textContent='$'+p.regular;
+  updateInsCalc();
 }
 
 // ── OBJECTIONS ──
@@ -1129,7 +1162,7 @@ function toggleObj(el){
 function updateInsCalc(){
   const slider=document.getElementById('ins-slider');
   const damage=parseInt(slider.value);
-  const monthly=59,daily=(monthly*12/365).toFixed(2),annual=monthly*12;
+  const monthly=sqftPricing[selectedSqftIdx].regular,daily=(monthly*12/365).toFixed(2),annual=monthly*12;
   const save=damage-annual;
   document.getElementById('ins-slider-val').textContent='$'+damage.toLocaleString();
   document.getElementById('ins-monthly').textContent='$'+monthly+'/mo';
